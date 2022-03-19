@@ -134,7 +134,7 @@ new Vue({
             info.szsqsfybl = "0";
             info.sfcxzysx = "0";
     
-            console.log(info);
+            #console.log(info);
     
             this.xsave(info);
         },
@@ -187,6 +187,7 @@ url = '''https://m.ruc.edu.cn/uc/wap/login?redirect=https%3A%2F%2Fm.ruc.edu.cn%2
 
 
 async def run():
+    print(time.strftime("%Y-%m-%d-%H_%M_%S", time.localtime()))
     print("init browser")
     browser = await launch(
         {'args': ['--disable-infobars', '--blink-settings=imagesEnabled=false', '--no-first-run', '--disable-gpu',
@@ -227,7 +228,7 @@ async def run():
     print("exec script_submit")
     await page.evaluate(script_submit, force_expr=True)
 
-    await page.waitFor(1000)
+    await page.waitFor(10000 + random.random() * 10000)
 
     print("close browser")
     await browser.close()

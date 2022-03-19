@@ -38,7 +38,11 @@ def init() -> None:
     password = os.environ.get(PASSWORD)
 
     if username is None or password is None:
-        print("username or password is empty")
+        if username is None or username == "":
+            print("username is empty")
+        if password is None or password == "":
+            print("username is empty")
+        raise AttributeError("username or password is empty")
 
     address = os.environ.get(ADDRESS)
     if address is not None:
