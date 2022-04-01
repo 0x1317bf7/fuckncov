@@ -7,7 +7,7 @@ jobs:
   build-and-deploy-image:
     runs-on: ubuntu-latest
     steps:
-      # 拉取master分支
+      # 拉取main分支
       - name: Checkout
         uses: actions/checkout@main
       # 设置qemu来编译多个平台的镜像
