@@ -66,10 +66,10 @@ def init() -> None:
     if useragent is None:
         useragent = "Mozilla/5.0 (iPad; CPU OS 11_3 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/11.0 Tablet/15E148 Safari/604.1"
 
-    print(username)
-    print(password)
-    print(address)
-    print(web_login)
-    print(day_of_week)
-    print(time)
-    print(useragent)
+    print("username : " + str(username))
+    print("password : " + str(password))
+    print("address : \n" + str(address))
+    print("web_login : " + str(web_login))
+    print("day_of_week : " + str(day_of_week))
+    print("time : " + str(time))
+    print("useragent : " + str(useragent))

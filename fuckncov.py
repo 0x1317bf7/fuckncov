@@ -11,28 +11,19 @@ values.init()
 
 script_web_login = '''
 function loginAccount() {
-    // 若页面不存在 domain，则 domain 为空
     var domain = $('#domain').val();
     var portal = new Portal(CONFIG);
     if (domain && domain.substring(0, 1) !== '@') domain = '@' + domain.split('@')[1];
-        // 写入用户信息
         portal.userInfo.username = "$USERNAME";
         portal.userInfo.password = "$PASSWORD";
         portal.userInfo.domain   = domain || '';
         portal.login({
-            // 认证方式为账号认证
             type: 'account',
-            // 认证成功
             success: function (message) {
-                // cookie 存 username
                 portal.setCookie('username', portal.userInfo.username);
-                // 若勾选记住密码
                 if ($('#remember').prop('checked')) portal.remember(true);
-                // 若未勾选记住密码 或 不存在记住密码功能
                 if (!$('#remember').prop('checked')) portal.remember(false);
-                // 重定向至成功页
                 if (!CREATER.highBurstPlan)  portal.toSuccess();
-                // 高并发预案
                 if (CREATER.highBurstPlan) portal.highBurstPlan(portal.getUrlParams('wlanuserfirsturl') || 'https://www.ruc.edu.cn');
         }
     });
@@ -41,25 +32,18 @@ loginAccount();
 '''.replace("$USERNAME", values.username).replace("$PASSWORD", values.password)
 
 script_login = '''
-new Vue({
-    el: '#app',
-    methods: {
-        login: function () { 
-            $.ajax({ 
-                    type: 'POST',
-                    cache: false, 
-                    url: '/uc/wap/login/check',
-                    data: { username: '$USERNAME', password: '$PASSWORD', }, 
-                    dataType: 'json',
-                    success: function (resp) {
-                         window.location.href = 'https:\/\/m.ruc.edu.cn\/ncov\/wap\/default';
-                    },
-                    error: function () { } 
-                }
-            );
-        }
+$.ajax({ 
+    type: 'POST',
+    cache: false, 
+    url: '/uc/wap/login/check',
+    data: { username: '$USERNAME', password: '$PASSWORD', }, 
+    dataType: 'json',
+    success: function (resp) {
+        window.location.href = 'https:\/\/m.ruc.edu.cn\/ncov\/wap\/default';
+    },
+    error: function () { } 
     }
-}).login();
+);
 '''.replace("$USERNAME", values.username).replace("$PASSWORD", values.password)
 
 script_submit = '''
@@ -70,7 +54,6 @@ new Vue({
             if (vm.hasFlag == 1) {
                 return;
             }
-            //vm.getLocation();
             $.ajax({
                 url: '/ncov/wap/default/save',
                 type: 'POST',
@@ -80,7 +63,6 @@ new Vue({
                 error: function () { }
             });
         },
-
         createAddress: function(address) {
             var q = address.position.Q;
             var r = address.position.R;
@@ -96,7 +78,6 @@ new Vue({
             address.position.lat = lat;
             return address;
         },
-
         auto_run: function() {
             var address = window.decodeURIComponent('$address$');
             var hasAddress = true;
@@ -107,10 +88,8 @@ new Vue({
             var json = JSON.parse(address);
             if (hasAddress) {
                 json = this.createAddress(json);
-            }
-            
+            }  
             var info = vm.info;
-    
             info.geo_api_info = JSON.stringify(json);
             info.address = json.formattedAddress;
             info.province = json.addressComponent.province;
@@ -121,7 +100,6 @@ new Vue({
                 info.city = json.addressComponent.city;
             }
             info.area = json.addressComponent.province + ' ' + json.addressComponent.city + ' ' + json.addressComponent.district;
-    
             info.sfzx = (info.address == "北京市海淀区海淀街道中国人民大学") ? "1" : "0";
             info.tw = this.randomInteger(1, 2);
             info.mjry = "0";
@@ -133,12 +111,8 @@ new Vue({
             info.sfcyglq = "0";
             info.szsqsfybl = "0";
             info.sfcxzysx = "0";
-    
-            #console.log(info);
-    
             this.xsave(info);
         },
-
         randomInteger: function(minNum, maxNum) {
             switch (arguments.length) {
                 case 1:
@@ -149,14 +123,12 @@ new Vue({
                     return 0;
             }
         },
-
         randomDecimal: function(min, max) {
             var range = max - min;
             var rand = Math.random();
             var num = min + rand * range;
             return num;
         },
-
         transformDecimal: function(number, i) {
             var decimalNum = null;
             var num = Number(number);
@@ -185,7 +157,6 @@ if values.address is not None:
 url_web_login = '''https://go.ruc.edu.cn'''
 url = '''https://m.ruc.edu.cn/uc/wap/login?redirect=https%3A%2F%2Fm.ruc.edu.cn%2Fncov%2Fwap%2Fdefault'''
 
-
 async def run():
     print(time.strftime("%Y-%m-%d-%H_%M_%S", time.localtime()))
     print("init browser")
@@ -200,7 +171,7 @@ async def run():
 
     await page.setUserAgent(values.useragent)
 
-    await page.setViewport({'width': 1920, 'height': 1080})
+    await page.setViewport({'width': 1536, 'height': 824})
 
     await page.evaluateOnNewDocument(
         '''() =>{ Object.defineProperties(navigator,{ webdriver:{ get: () => false } }) }''')
