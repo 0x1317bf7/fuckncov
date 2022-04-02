@@ -32,18 +32,25 @@ loginAccount();
 '''.replace("$USERNAME", values.username).replace("$PASSWORD", values.password)
 
 script_login = '''
-$.ajax({ 
-    type: 'POST',
-    cache: false, 
-    url: '/uc/wap/login/check',
-    data: { username: '$USERNAME', password: '$PASSWORD', }, 
-    dataType: 'json',
-    success: function (resp) {
-        window.location.href = 'https:\/\/m.ruc.edu.cn\/ncov\/wap\/default';
-    },
-    error: function () { } 
+new Vue({
+    el: '#app',
+    methods: {
+        login: function () { 
+            $.ajax({ 
+                    type: 'POST',
+                    cache: false, 
+                    url: '/uc/wap/login/check',
+                    data: { username: '$USERNAME', password: '$PASSWORD', }, 
+                    dataType: 'json',
+                    success: function (resp) {
+                         window.location.href = 'https:\/\/m.ruc.edu.cn\/ncov\/wap\/default';
+                    },
+                    error: function () { } 
+                }
+            );
+        }
     }
-);
+}).login();
 '''.replace("$USERNAME", values.username).replace("$PASSWORD", values.password)
 
 script_submit = '''
